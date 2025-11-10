@@ -1,0 +1,14 @@
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\Client.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\Employee.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\Part.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\Repair.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\RepairItem.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\RepairItemPart.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\entities\Watch.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\enums\CrystalMaterial.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\enums\ItemStatus.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\enums\Movement.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\enums\Role.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\enums\Status.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\repository\ClientRepository.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\WatchRepairService.java

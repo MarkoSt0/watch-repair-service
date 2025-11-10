@@ -1,0 +1,14 @@
+rs\ac\bg\fon\watchrepairservice\enums\CrystalMaterial.class
+rs\ac\bg\fon\watchrepairservice\enums\Role.class
+rs\ac\bg\fon\watchrepairservice\entities\Watch.class
+rs\ac\bg\fon\watchrepairservice\enums\Status.class
+rs\ac\bg\fon\watchrepairservice\enums\ItemStatus.class
+rs\ac\bg\fon\watchrepairservice\enums\Movement.class
+rs\ac\bg\fon\watchrepairservice\repository\ClientRepository.class
+rs\ac\bg\fon\watchrepairservice\entities\Employee.class
+rs\ac\bg\fon\watchrepairservice\entities\Part.class
+rs\ac\bg\fon\watchrepairservice\entities\RepairItemPart.class
+rs\ac\bg\fon\watchrepairservice\entities\Repair.class
+rs\ac\bg\fon\watchrepairservice\entities\RepairItem.class
+rs\ac\bg\fon\watchrepairservice\WatchRepairService.class
+rs\ac\bg\fon\watchrepairservice\entities\Client.class
