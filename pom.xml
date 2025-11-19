@@ -9,17 +9,17 @@
         <relativePath/>
     </parent>
 
-    
-    
+
+        
     <groupId>rs.ac.bg.fon</groupId>
     <artifactId>watchRepairService</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
-        <exec.mainClass>rs.ac.bg.fon.watchrepairservice.WatchRepairService</exec.mainClass>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <!--<exec.mainClass>rs.ac.bg.fon.watchrepairservice.WatchRepairService</exec.mainClass>-->
     </properties>
     
     <dependencies>
@@ -55,4 +55,12 @@
             <version>2.2.3</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

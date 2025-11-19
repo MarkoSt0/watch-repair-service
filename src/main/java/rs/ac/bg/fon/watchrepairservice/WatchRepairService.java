@@ -8,15 +8,13 @@ package rs.ac.bg.fon.watchrepairservice;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import rs.ac.bg.fon.watchrepairservice.entities.Client;
-import rs.ac.bg.fon.watchrepairservice.entities.Employee;
-import rs.ac.bg.fon.watchrepairservice.entities.Part;
-import rs.ac.bg.fon.watchrepairservice.entities.Repair;
-import rs.ac.bg.fon.watchrepairservice.entities.RepairItem;
-import rs.ac.bg.fon.watchrepairservice.entities.RepairItemPart;
-import rs.ac.bg.fon.watchrepairservice.entities.Watch;
+import rs.ac.bg.fon.watchrepairservice.entity.Client;
+import rs.ac.bg.fon.watchrepairservice.entity.Employee;
+import rs.ac.bg.fon.watchrepairservice.entity.Part;
+import rs.ac.bg.fon.watchrepairservice.entity.Repair;
+import rs.ac.bg.fon.watchrepairservice.entity.RepairItem;
+import rs.ac.bg.fon.watchrepairservice.entity.RepairItemPart;
+import rs.ac.bg.fon.watchrepairservice.entity.Watch;
 import rs.ac.bg.fon.watchrepairservice.repository.ClientRepository;
 import rs.ac.bg.fon.watchrepairservice.repository.EmployeeRepository;
 import rs.ac.bg.fon.watchrepairservice.repository.PartRepository;
@@ -30,9 +28,9 @@ import rs.ac.bg.fon.watchrepairservice.repository.WatchRepository;
  * @author Marko
  */
 @SpringBootApplication
-@EntityScan(basePackages = "rs.ac.bg.fon.watchrepairservice.entities")
-@EnableJpaRepositories
-        (basePackages = "rs.ac.bg.fon.watchrepairservice.repository")
+//@EntityScan(basePackages = "rs.ac.bg.fon.watchrepairservice.entities")
+//@EnableJpaRepositories
+//        (basePackages = "rs.ac.bg.fon.watchrepairservice.repository")
 public class WatchRepairService implements CommandLineRunner{
     ClientRepository clientRepo;
     EmployeeRepository employeeRepo;
@@ -72,12 +70,14 @@ public class WatchRepairService implements CommandLineRunner{
         RepairItem repairItem = repairItemRepo.findById(Long.valueOf(1)).orElse(null);
         RepairItemPart repairItemPart = repairItemPartRepo.findById(Long.valueOf(1)).orElse(null);
         Watch watch = watchRepo.findById(Long.valueOf(1)).orElse(null);
+        Client client = clientRepo.findById(Long.valueOf(1)).orElse(null);
         System.out.println(employee);
         System.out.println(part);
         System.out.println(repair);
         System.out.println(repairItem);
         System.out.println(repairItemPart);
         System.out.println(watch);
+        System.out.println(client);
         
     }
 }

@@ -2,13 +2,13 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="rs.ac.bg.fon_watchRepairService_jar_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.Part</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.Employee</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.RepairItemPart</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.Watch</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.RepairItem</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.Client</class>
-    <class>rs.ac.bg.fon.watchrepairservice.entities.Repair</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.Part</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.Watch</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.Client</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.Repair</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.RepairItem</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.Employee</class>
+    <class>rs.ac.bg.fon.watchrepairservice.entity.RepairItemPart</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/watch_service?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
