@@ -1,3 +1,5 @@
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\communication\ApiResponse.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\communication\ServiceResult.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\dto\ClientDTO.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\dto\EmployeeDTO.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\dto\PartDTO.java
@@ -31,4 +33,9 @@ C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\repository\RepairItemRepository.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\repository\RepairRepository.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\repository\WatchRepository.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\service\ClientService.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\service\EmployeeService.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\service\PartService.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\service\RepairService.java
+C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\service\WatchService.java
 C:\Users\Marko\Documents\DrugiKolokvijumiPS\watchRepairService\src\main\java\rs\ac\bg\fon\watchrepairservice\WatchRepairService.java

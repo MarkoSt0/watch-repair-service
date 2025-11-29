@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.watchrepairservice.dto.ClientDTO;
+import rs.ac.bg.fon.watchrepairservice.dto.WatchDTO;
 import rs.ac.bg.fon.watchrepairservice.entity.Client;
 
 /**
@@ -62,5 +63,26 @@ public class ClientMapper {
         return entities.stream()
                 .map(ClientMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static boolean isValidDTO(ClientDTO dto) {
+        return dto.getEmail() != null && dto.getFirstName() != null &&
+                dto.getLastName() != null && dto.getPhone() != null &&
+                !dto.getEmail().trim().isEmpty() && !dto.getFirstName().trim().isEmpty() &&
+                dto.getLastName().trim().isEmpty() && !dto.getPhone().trim().isEmpty();
+    }
+    
+    public static ClientDTO toDTOWithWatches(Client entity){
+        if (entity == null) {return null;}
+
+        ClientDTO dto = new ClientDTO();
+        dto.setIdClient(entity.getIdClient());
+        dto.setEmail(entity.getEmail());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        dto.setWatchCollection(WatchMapper.toDTOList(entity.getWatchCollection().stream().toList()));
+        
+        return dto;
     }
 }

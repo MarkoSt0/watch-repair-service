@@ -38,6 +38,7 @@ public class WatchMapper {
         if (dto == null) { return null; }
         
         Watch entity = new Watch();
+        entity.setIdWatch(dto.getIdWatch());
         entity.setBrand(dto.getBrand());
         entity.setModel(dto.getModel());
         entity.setCaseMaterial(dto.getCaseMaterial());
@@ -73,5 +74,12 @@ public class WatchMapper {
     
 //    ...in future add helper class with information about watch with content like:
 //    brand, model...
+
+    public static boolean isValidDTO(WatchDTO dto) {
+        if(dto.getBrand() == null || dto.getIdClient() == null ||
+                dto.getBrand().trim().isEmpty() || dto.getIdClient() < 1)
+            return false;
+        return true;
+    }
     
 }

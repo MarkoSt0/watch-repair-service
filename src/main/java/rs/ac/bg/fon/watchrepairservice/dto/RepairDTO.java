@@ -18,8 +18,8 @@ public class RepairDTO {
     private LocalDate createdAt;
     private BigDecimal totalCost;
     private Status status;
-    private ClientDTO idClient;
-    private EmployeeDTO idEmployee;
+    private ClientDTO client;
+    private EmployeeDTO employee;
     private List<RepairItemDTO> repairItemCollection;
 
     public RepairDTO() {
@@ -30,8 +30,8 @@ public class RepairDTO {
         this.createdAt = createdAt;
         this.totalCost = totalCost;
         this.status = status;
-        this.idClient = idClient;
-        this.idEmployee = idEmployee;
+        this.client = idClient;
+        this.employee = idEmployee;
         this.repairItemCollection = repairItemCollection;
     }
 
@@ -67,20 +67,20 @@ public class RepairDTO {
         this.status = status;
     }
 
-    public ClientDTO getIdClient() {
-        return idClient;
+    public ClientDTO getClient() {
+        return client;
     }
 
-    public void setIdClient(ClientDTO idClient) {
-        this.idClient = idClient;
+    public void setClient(ClientDTO client) {
+        this.client = client;
     }
 
-    public EmployeeDTO getIdEmployee() {
-        return idEmployee;
+    public EmployeeDTO getEmployee() {
+        return employee;
     }
 
-    public void setIdEmployee(EmployeeDTO idEmployee) {
-        this.idEmployee = idEmployee;
+    public void setEmployee(EmployeeDTO employee) {
+        this.employee = employee;
     }
 
     public List<RepairItemDTO> getRepairItemCollection() {

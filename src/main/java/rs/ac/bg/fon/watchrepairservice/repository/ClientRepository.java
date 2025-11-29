@@ -15,4 +15,6 @@ import rs.ac.bg.fon.watchrepairservice.entity.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long>{
     public Client findByIdClient(Long id);
+
+    public boolean existsByEmail(String email);
 }

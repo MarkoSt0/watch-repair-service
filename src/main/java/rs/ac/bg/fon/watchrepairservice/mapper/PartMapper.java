@@ -35,6 +35,7 @@ public class PartMapper {
         }
 
         Part entity = new Part();
+        
         entity.setName(dto.getName());
         entity.setCurrentPrice(dto.getCurrentPrice());
         
@@ -61,4 +62,11 @@ public class PartMapper {
     }
     
     // For basicDTO, validation of data, add new methods
+    
+    public static boolean isValidDTO(PartDTO dto){
+        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

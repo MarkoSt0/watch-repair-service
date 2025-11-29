@@ -14,5 +14,7 @@ import rs.ac.bg.fon.watchrepairservice.entity.Employee;
  */
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
+
+    public boolean existsByUsername(String username);
     
 }

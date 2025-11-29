@@ -7,6 +7,7 @@ package rs.ac.bg.fon.watchrepairservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import rs.ac.bg.fon.watchrepairservice.entity.RepairItem;
+import rs.ac.bg.fon.watchrepairservice.entity.Watch;
 
 /**
  *
@@ -14,5 +15,7 @@ import rs.ac.bg.fon.watchrepairservice.entity.RepairItem;
  */
 @Repository
 public interface RepairItemRepository extends JpaRepository<RepairItem, Long>{
+
+    public boolean existsByIdWatch(Watch watch);
     
 }

@@ -53,6 +53,8 @@ public class RepairItemMapper {
         entity.setItemStatus(dto.getItemStatus() != null ? 
             dto.getItemStatus() : ItemStatus.PENDING);
         entity.setCompletedAt(dto.getCompletedAt());
+        entity.setIdWatch(WatchMapper.toEntity(dto.getWatch()));
+
         
         return entity;
     }

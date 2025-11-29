@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import rs.ac.bg.fon.watchrepairservice.dto.ClientDTO;
 import rs.ac.bg.fon.watchrepairservice.dto.EmployeeDTO;
 import rs.ac.bg.fon.watchrepairservice.entity.Employee;
 
@@ -93,5 +94,12 @@ public class EmployeeMapper {
         return entities.stream()
                 .map(EmployeeMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static boolean isValidDTO(EmployeeDTO dto) {
+        return dto.getUsername()!= null && dto.getFirstName() != null &&
+                dto.getLastName() != null && dto.getPassword()!= null &&
+                !dto.getUsername().trim().isEmpty() && !dto.getFirstName().trim().isEmpty() &&
+                dto.getLastName().trim().isEmpty() && !dto.getPassword().trim().isEmpty();
     }
 }

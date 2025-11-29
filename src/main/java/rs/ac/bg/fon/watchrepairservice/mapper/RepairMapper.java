@@ -32,9 +32,9 @@ public class RepairMapper {
         dto.setTotalCost(entity.getTotalCost());
         dto.setStatus(entity.getStatus());
         
-        dto.setIdClient(entity.getIdClient() != null ? 
+        dto.setClient(entity.getIdClient() != null ? 
             ClientMapper.toDTO(entity.getIdClient()) : null);
-        dto.setIdEmployee(entity.getIdEmployee() != null ? 
+        dto.setEmployee(entity.getIdEmployee() != null ? 
             EmployeeMapper.toDTO(entity.getIdEmployee()) : null);
         
         dto.setRepairItemCollection(null);
@@ -54,6 +54,7 @@ public class RepairMapper {
             dto.getTotalCost() : BigDecimal.ZERO);
         entity.setStatus(dto.getStatus() != null ? 
             dto.getStatus() : Status.RECEIVED);
+        
         
         return entity;
     }
@@ -87,9 +88,9 @@ public class RepairMapper {
         dto.setTotalCost(entity.getTotalCost());
         dto.setStatus(entity.getStatus());
         
-        dto.setIdClient(entity.getIdClient() != null ? 
+        dto.setClient(entity.getIdClient() != null ? 
             ClientMapper.toDTO(entity.getIdClient()) : null);
-        dto.setIdEmployee(entity.getIdEmployee() != null ? 
+        dto.setEmployee(entity.getIdEmployee() != null ? 
             EmployeeMapper.toDTO(entity.getIdEmployee()) : null);
         
         if (entity.getRepairItemCollection() != null) {
@@ -103,5 +104,11 @@ public class RepairMapper {
         }
         
         return dto;
+    }
+
+    public static boolean isValidDTO(RepairDTO dto) {
+        return dto.getCreatedAt() == null || dto.getRepairItemCollection() == null ||
+                dto.getRepairItemCollection().isEmpty() || dto.getStatus() == null ||
+                dto.getTotalCost() == null;
     }
 }
