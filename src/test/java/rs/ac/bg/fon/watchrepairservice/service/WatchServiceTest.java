@@ -4,28 +4,26 @@
  */
 package rs.ac.bg.fon.watchrepairservice.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.math.BigDecimal;
-import java.util.*;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import rs.ac.bg.fon.watchrepairservice.dto.*;
-import rs.ac.bg.fon.watchrepairservice.entity.*;
-import rs.ac.bg.fon.watchrepairservice.repository.*;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import rs.ac.bg.fon.watchrepairservice.communication.ServiceResult;
 import rs.ac.bg.fon.watchrepairservice.dto.WatchDTO;
+import rs.ac.bg.fon.watchrepairservice.entity.Client;
+import rs.ac.bg.fon.watchrepairservice.entity.Watch;
+import rs.ac.bg.fon.watchrepairservice.repository.ClientRepository;
+import rs.ac.bg.fon.watchrepairservice.repository.RepairItemRepository;
+import rs.ac.bg.fon.watchrepairservice.repository.WatchRepository;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import rs.ac.bg.fon.watchrepairservice.enums.Movement;
 
 /**
@@ -34,17 +32,21 @@ import rs.ac.bg.fon.watchrepairservice.enums.Movement;
  */
 @ExtendWith(MockitoExtension.class)
 public class WatchServiceTest {
-    @Mock 
-    private ClientRepository clientRepo;
-    @Mock 
-    private EmployeeRepository employeeRepo;
-    @Mock 
+    @Mock
     private WatchRepository watchRepo;
-    @Mock 
-    private RepairRepository repairRepo;
+    @Mock
+    private ClientRepository clientRepo;
+    @Mock
+    private RepairItemRepository repairItemRepo;
     
     @InjectMocks
-    private RepairService repairService;
+    private WatchService watchService;
+    
+    // Entities-DTOs
+    private WatchDTO watchDTO;
+    private Watch watchEntity;
+    private Client client;
+    
     
     public WatchServiceTest() {
     }
@@ -57,8 +59,19 @@ public class WatchServiceTest {
     public static void tearDownClass() {
     }
     
+    // First time using this method
     @BeforeEach
     public void setUp() {
+        client = new Client();
+        client.setIdClient(1L);
+        
+        watchDTO = new WatchDTO();
+        watchDTO.setIdClient(1L);
+        watchDTO.setBrand("Longines");
+        
+        watchEntity = new Watch();
+        watchEntity.setIdWatch(5L);
+        watchEntity.setIdClient(client);
     }
     
     @AfterEach
@@ -69,168 +82,199 @@ public class WatchServiceTest {
      * Test of add method, of class WatchService.
      */
     @Test
-    void add_validData_success() {
-//        In orderd added (DTOs): Client, Employee, Watch, One ItemPart, 
-//        one Item containing part
-        ClientDTO clientDTO = new ClientDTO();
-        clientDTO.setIdClient(1L);
-
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setIdEmployee(2L);
-
-        WatchDTO watchDTO = new WatchDTO();
-        watchDTO.setIdWatch(5L);
-
-        RepairItemPartDTO partDTO = new RepairItemPartDTO();
-        partDTO.setBrandName("Omega");
-        partDTO.setQuantity(2);
-        partDTO.setCost(new BigDecimal("50"));
-
-        RepairItemDTO itemDTO = new RepairItemDTO();
-        itemDTO.setWatch(watchDTO);
-        itemDTO.setRepairItemPartCollection(Collections.singletonList(partDTO));
-
-//        Repair!
-        RepairDTO dto = new RepairDTO();
-        dto.setClient(clientDTO);
-        dto.setEmployee(employeeDTO);
-        dto.setRepairItemCollection(Collections.singletonList(itemDTO));
-
-//        Mock database returned balues
-        Client client = new Client();
-        client.setIdClient(1L);
-
-        Employee employee = new Employee();
-        employee.setIdEmployee(2L);
-
-        Watch watch = new Watch();
-        watch.setIdWatch(5L);
-
-        Repair saved = new Repair();
-        saved.setIdRepair(10L);
-
+    public void add_validWatch_success(){
         when(clientRepo.findById(1L)).thenReturn(Optional.of(client));
-        when(employeeRepo.findById(2L)).thenReturn(Optional.of(employee));
-        when(watchRepo.findById(5L)).thenReturn(Optional.of(watch));
-        when(repairRepo.save(any(Repair.class))).thenReturn(saved);
-
-//        execute
-        ServiceResult result = repairService.add(dto);
+        when(watchRepo.save(any(Watch.class))).thenReturn(watchEntity);
         
-        assertTrue(result.isSuccess(), "Should be success, but was: " + result.getMessage());
-
-//        assertTrue(result.isSuccess());
-        assertEquals("Repair added successfully.", result.getMessage());
-        assertNotNull(result.getData());
-
-        verify(clientRepo).findById(1L);
-        verify(employeeRepo).findById(2L);
-        verify(watchRepo).findById(5L);
-        verify(repairRepo).save(any(Repair.class));
+        ServiceResult result = watchService.add(watchDTO);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watch added successfully.", result.getMessage());
+        assertNotNull(result.getData()); verify(watchRepo, times(1)).save(any(Watch.class));
     }
-
+    
+    @Test
+    public void add_invalidWatch_returnsError(){
+        watchDTO.setBrand(null);
+        ServiceResult result = watchService.add(watchDTO);
+        assertFalse(result.isSuccess());
+        assertEquals("Invalid watch data. Brand and client are required.",
+                result.getMessage());
+        verify(watchRepo, never()).save(any());
+    }
+    
+    @Test
+    public void add_clientNotFound_returnsError(){
+        when(clientRepo.findById(1L)).thenReturn(Optional.empty());
+        ServiceResult result = watchService.add(watchDTO);
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessage().contains("Client with ID 1 not found."));
+    }
     /**
      * Test of update method, of class WatchService.
      */
     @Test
-    public void testUpdate() {
-        System.out.println("update");
-        WatchDTO dto = null;
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.update(dto);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void update_validWatch_success(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.of(watchEntity));
+        when(watchRepo.save(any(Watch.class))).thenReturn(watchEntity);
+        watchDTO.setIdWatch(10L);
+        
+        ServiceResult result = watchService.update(watchDTO);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watch updated successfully.",
+                result.getMessage());
+        verify(watchRepo, times(1)).save(any(Watch.class));
+    }
+    
+    @Test 
+    public void update_watchNotFound_returnsError(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.empty());
+        watchDTO.setIdWatch(10L);
+        
+        ServiceResult result = watchService.update(watchDTO);
+       
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessage().contains("Watch not found."));
     }
 
     /**
      * Test of getWatch method, of class WatchService.
      */
     @Test
-    public void testGetWatch() {
-        System.out.println("getWatch");
-        Long id = null;
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.getWatch(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void getWatch_found_success(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.of(watchEntity));
+        
+        ServiceResult result = watchService.getWatch(10L);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watch found.", result.getMessage());
+        assertNotNull(result.getData());
+    }
+    
+    @Test
+    public void getWatch_notFound_returnsError(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.empty());
+        
+        ServiceResult result = watchService.getWatch(10L);
+        
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessage().contains("Watch not found."));
     }
 
     /**
      * Test of getAllWatches method, of class WatchService.
      */
     @Test
-    public void testGetAllWatches() {
-        System.out.println("getAllWatches");
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.getAllWatches();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void getAllWatches_success(){
+        when(watchRepo.findAll()).thenReturn(List.of(watchEntity));
+        
+        ServiceResult result = watchService.getAllWatches();
+        
+        assertTrue(result.isSuccess());
+        assertEquals("All watches loaded.", result.getMessage());
+        assertNotNull(result.getData());
     }
 
     /**
      * Test of getWatchesByClient method, of class WatchService.
      */
     @Test
-    public void testGetWatchesByClient() {
-        System.out.println("getWatchesByClient");
-        Long clientId = null;
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.getWatchesByClient(clientId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void getWatchesByClient_found_success(){
+        when(clientRepo.findById(1L)).thenReturn(Optional.of(client));
+        when(watchRepo.findByIdClient(client)).thenReturn(List.of(watchEntity));
+        
+        ServiceResult result = watchService.getWatchesByClient(1L);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watches for client loaded.", result.getMessage());
+        assertNotNull(result.getData());
     }
 
+    @Test
+    public void getWatchesByClient_clientNotFound_returnsError(){
+        when(clientRepo.findById(1L)).thenReturn(Optional.empty());
+        
+        ServiceResult result = watchService.getWatchesByClient(1L);
+        
+        assertFalse(result.isSuccess());
+        assertTrue(result.getMessage().contains("Client not found."));
+    }
     /**
      * Test of getWatchesByBrand method, of class WatchService.
      */
     @Test
-    public void testGetWatchesByBrand() {
-        System.out.println("getWatchesByBrand");
-        String brand = "";
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.getWatchesByBrand(brand);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void getWatchesByBrand_success() {
+        when(watchRepo.findByBrand("Longines")).thenReturn(List.of(watchEntity));
+        
+        ServiceResult result = watchService.getWatchesByBrand("Longines");
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watches by brand loaded.", result.getMessage());
+        assertNotNull(result.getData());
+    }
+    
+    @Test
+    public void getWatchesByBrand_notFound_returnsEmpty(){
+        when(watchRepo.findByBrand("Omega")).thenReturn(List.of());
+        
+        ServiceResult result = watchService.getWatchesByBrand("Omega");
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watches by brand loaded.", result.getMessage());
+        assertNotNull(result.getData());
     }
 
     /**
      * Test of getWatchesByMovement method, of class WatchService.
      */
     @Test
-    public void testGetWatchesByMovement() {
-        System.out.println("getWatchesByMovement");
-        Movement movement = null;
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.getWatchesByMovement(movement);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void getWatchesByMovement_success(){
+        when(watchRepo.findByMovement(Movement.AUTOMATIC_MECHANICAL)).thenReturn(List.of(watchEntity));
+        
+        ServiceResult result = watchService.getWatchesByMovement(Movement.AUTOMATIC_MECHANICAL);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watches by movement loaded.", result.getMessage());
+        assertNotNull(result.getData());
+    }
+    
+    @Test
+    public void getWatchesByMovement_notFound_returnsEmpty(){
+        when(watchRepo.findByMovement(Movement.AUTOMATIC_MECHANICAL)).thenReturn(List.of());
+        
+        ServiceResult result = watchService.getWatchesByMovement(Movement.AUTOMATIC_MECHANICAL);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watches by movement loaded.", result.getMessage());
+        assertNotNull(result.getData());
     }
 
     /**
      * Test of deleteWatch method, of class WatchService.
      */
     @Test
-    public void testDeleteWatch() {
-        System.out.println("deleteWatch");
-        Long id = null;
-        WatchService instance = null;
-        ServiceResult expResult = null;
-        ServiceResult result = instance.deleteWatch(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void deleteWatch_success(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.of(watchEntity));
+        when(repairItemRepo.existsByIdWatch(watchEntity)).thenReturn(false);
+        
+        ServiceResult result = watchService.deleteWatch(10L);
+        
+        assertTrue(result.isSuccess());
+        assertEquals("Watch deleted successfully.", result.getMessage());
+        verify(watchRepo, times(1)).deleteById(10L);
+    }
+    
+    @Test
+    public void deleteWatch_hasRepairHistory_returnsError(){
+        when(watchRepo.findById(10L)).thenReturn(Optional.of(watchEntity));
+        when(repairItemRepo.existsByIdWatch(watchEntity)).thenReturn(true);
+        
+        ServiceResult result = watchService.deleteWatch(10L);
+        
+        assertFalse(result.isSuccess());
+        assertEquals("Cannot delete watch that has repair history.", result.getMessage());
+        verify(watchRepo, never()).deleteById(anyLong());
     }
     
 }

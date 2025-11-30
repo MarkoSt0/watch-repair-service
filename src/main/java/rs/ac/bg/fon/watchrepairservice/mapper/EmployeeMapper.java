@@ -100,6 +100,6 @@ public class EmployeeMapper {
         return dto.getUsername()!= null && dto.getFirstName() != null &&
                 dto.getLastName() != null && dto.getPassword()!= null &&
                 !dto.getUsername().trim().isEmpty() && !dto.getFirstName().trim().isEmpty() &&
-                dto.getLastName().trim().isEmpty() && !dto.getPassword().trim().isEmpty();
+                !dto.getLastName().trim().isEmpty() && !dto.getPassword().trim().isEmpty();
     }
 }

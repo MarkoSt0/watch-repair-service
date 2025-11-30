@@ -64,7 +64,7 @@ public class ClientService {
     public ServiceResult update(ClientDTO dto) {
         try {
             Client existing = clientRepo.findById(dto.getIdClient())
-                    .orElseThrow(() -> new EntityNotFoundException("Watch not found."));
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found."));
             
             if (!ClientMapper.isValidDTO(dto)) {
                 return ServiceResult.errorMessage("Invalid client data.");
@@ -102,13 +102,13 @@ public class ClientService {
         } catch (EntityNotFoundException e) {
             return ServiceResult.errorMessage(e.getMessage());
         } catch (Exception e) {
-            return ServiceResult.errorMessage("Error while fetching watch: " + e.getMessage());
+            return ServiceResult.errorMessage("Error while fetching client: " + e.getMessage());
         }
     }
     
     public ServiceResult getAllClients() {
         List<ClientDTO> clientsDTO = ClientMapper.toDTOList(clientRepo.findAll());
-        return ServiceResult.successMessageData("All watches loaded.", clientsDTO);
+        return ServiceResult.successMessageData("All clients loaded.", clientsDTO);
     }
     
     
@@ -130,7 +130,7 @@ public class ClientService {
     public ServiceResult delete(Long id) {
         try {
             Client client = clientRepo.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Watch not found."));
+                    .orElseThrow(() -> new EntityNotFoundException("Client not found."));
             
             if (repairRepo.existsByIdClient(client)) {
                 return ServiceResult.errorMessage("Cannot delete client that was part of repair history.");

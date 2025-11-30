@@ -4,13 +4,17 @@
  */
 package rs.ac.bg.fon.watchrepairservice.mapper;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.watchrepairservice.dto.ClientDTO;
 import rs.ac.bg.fon.watchrepairservice.dto.WatchDTO;
 import rs.ac.bg.fon.watchrepairservice.entity.Client;
+import rs.ac.bg.fon.watchrepairservice.entity.Watch;
 
 /**
  *
@@ -69,7 +73,7 @@ public class ClientMapper {
         return dto.getEmail() != null && dto.getFirstName() != null &&
                 dto.getLastName() != null && dto.getPhone() != null &&
                 !dto.getEmail().trim().isEmpty() && !dto.getFirstName().trim().isEmpty() &&
-                dto.getLastName().trim().isEmpty() && !dto.getPhone().trim().isEmpty();
+                !dto.getLastName().trim().isEmpty() && !dto.getPhone().trim().isEmpty();
     }
     
     public static ClientDTO toDTOWithWatches(Client entity){
@@ -81,8 +85,13 @@ public class ClientMapper {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhone(entity.getPhone());
-        dto.setWatchCollection(WatchMapper.toDTOList(entity.getWatchCollection().stream().toList()));
-        
+        Collection<Watch> watches = entity.getWatchCollection();
+        if(watches == null){
+        dto.setWatchCollection(Collections.emptyList());
+        }else{
+            dto.setWatchCollection(WatchMapper.toDTOList(new ArrayList<>(watches)));
+        }
+
         return dto;
     }
 }
