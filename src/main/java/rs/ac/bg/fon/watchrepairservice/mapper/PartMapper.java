@@ -64,7 +64,11 @@ public class PartMapper {
     // For basicDTO, validation of data, add new methods
     
     public static boolean isValidDTO(PartDTO dto){
-        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+        if (dto.getName() == null || 
+            dto.getName().trim().isEmpty() ||
+            dto.getCurrentPrice() == null ||
+            dto.getCurrentPrice().doubleValue() < 0
+            ) {
             return false;
         }
         return true;

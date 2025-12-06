@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.watchrepairservice.communication.ServiceResult;
 import rs.ac.bg.fon.watchrepairservice.dto.PartDTO;
 import rs.ac.bg.fon.watchrepairservice.entity.Part;
+import rs.ac.bg.fon.watchrepairservice.exception.ResourceInUseException;
+import rs.ac.bg.fon.watchrepairservice.exception.InvalidDataException;
+import rs.ac.bg.fon.watchrepairservice.exception.ResourceAlreadyExistsException;
+import rs.ac.bg.fon.watchrepairservice.exception.ResourceNotFoundException;
 import rs.ac.bg.fon.watchrepairservice.mapper.PartMapper;
 import rs.ac.bg.fon.watchrepairservice.repository.PartRepository;
 
@@ -29,89 +33,71 @@ public class PartService {
         this.partRepo = partRepo;
     }
     
-    public ServiceResult addPart(PartDTO dto){
-        try {
-            if (!PartMapper.isValidDTO(dto)) {
-                return ServiceResult.errorMessage("Invalid part data. Name is required.");
-            }
+    public PartDTO addPart(PartDTO dto){
+            validatePartDTO(dto);
+            
             if (partRepo.existsByName(dto.getName())) {
-                return ServiceResult.errorMessage("Part with this name already exists.");
+                throw new ResourceAlreadyExistsException("Part with name " + dto.getName() + "already exists.");
             }
             Part part = partRepo.save(PartMapper.toEntity(dto));
-            return ServiceResult.successMessageData(
-                    "Part added successuflly.", 
-                    PartMapper.toDTO(part)
-            );
-        } catch (Exception e) {
-            return ServiceResult.errorMessage("Error while adding part: " + e.getMessage());
-        }
-    }
-    
-    public ServiceResult updatePart(PartDTO dto){
-        Part existing = partRepo.findById(dto.getIdPart())
-                .orElseThrow(() -> new EntityNotFoundException("Part not found."));
-        if (!PartMapper.isValidDTO(dto)) {
-            return ServiceResult.errorMessage("Invalid part data. Name is required.");
-        }
-        if (!dto.getName().equals(existing.getName()) && 
-            partRepo.existsByName(dto.getName())) {
-            return ServiceResult.errorMessage("Part with this name already exists.");
-        }
-        try {
-            PartMapper.updateEntityFromDTO(dto, existing);
-            Part updated = partRepo.save(existing);
-            return ServiceResult.successMessageData(
-                    "Part successfully updated.", 
-                    PartMapper.toDTO(updated)
-            );
-        } catch (Exception e) {
-            return ServiceResult.errorMessage("Error while updating part" + e.getMessage());
-        }
-    }
-    
-    public ServiceResult getPart(Long id){
-        try {
-            Part part = partRepo.findById(id).orElseThrow(() ->
-                    new EntityNotFoundException("Part not found."));
-            return ServiceResult.successMessageData(
-                    "Part found.", 
-                    PartMapper.toDTO(part)
-            );
-        } catch (Exception e) {
-            return ServiceResult.errorMessage("Error while fetching part: " + e.getMessage());
-        }
+            
+            return PartMapper.toDTO(part);
         
     }
     
-    public ServiceResult getPartByName(String name){
-        try {
-            Part part = partRepo.findByName(name).orElseThrow(() ->
-                    new EntityNotFoundException("Part not found."));
-            return ServiceResult.successMessageData(
-                    "Part found.", 
-                    PartMapper.toDTO(part)
-            );            
-        } catch (Exception e) {
-            return ServiceResult.errorMessage("Error while fetching part: " + e.getMessage());
-
+    public PartDTO updatePart(Long id, PartDTO dto){
+        Part existing = partRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Part with id " + id + " not found."));
+        
+        validatePartDTO(dto);
+        
+        if (!dto.getName().equals(existing.getName()) && 
+            partRepo.existsByName(dto.getName())) {
+            throw new ResourceAlreadyExistsException("Part with name " + dto.getName() + " already exists.");
         }
+        
+        PartMapper.updateEntityFromDTO(dto, existing);
+        Part updated = partRepo.save(existing);
+        return PartMapper.toDTO(updated);
+        
     }
     
-    public ServiceResult deletePartById(Long id){
+    public PartDTO getPart(Long id){
+        Part part = partRepo.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Part with id " + id + " not found."));
+        return PartMapper.toDTO(part);
+        
+    }
+    
+    public PartDTO getPartByName(String name){
+        Part part = partRepo.findByName(name).orElseThrow(() ->
+                new ResourceNotFoundException("Part with name " + name + " not found."));
+        return PartMapper.toDTO(part);            
+        
+    }
+    
+    public void deletePartById(Long id){
+        //This part of code needs change.
+        //If part is part of ACTIVE repair i should restrict delete operation, in other
+        //cases NO!
+        
         partRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Part not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Part with id " + id + " not found."));
         try {
             partRepo.deleteById(id);
-            return ServiceResult.successMessage("Part deleted.");
         } catch (DataIntegrityViolationException e) {
-            return ServiceResult.errorMessage("Cannot delete part that is used in repairs.");
-        }catch (Exception e) {
-            return ServiceResult.errorMessage("Part not deleted");
+            throw new ResourceInUseException("Cannot delete part that is used in repairs.");
         }
     }
     
-    public ServiceResult getAllParts(){
-        List<PartDTO> citiesDTO = partRepo.findAll().stream().map(PartMapper::toDTO).collect(Collectors.toList());
-        return ServiceResult.successMessageData("All parts loaded.", citiesDTO);
+    public List<PartDTO> getAllParts(){
+        return partRepo.findAll().stream().map(PartMapper::toDTO).collect(Collectors.toList());
+        
+    }
+    
+    private void validatePartDTO(PartDTO dto){
+        if (!PartMapper.isValidDTO(dto)) {
+            throw new InvalidDataException("Invalid part data. Name and price are required.");
+        }
     }
 }

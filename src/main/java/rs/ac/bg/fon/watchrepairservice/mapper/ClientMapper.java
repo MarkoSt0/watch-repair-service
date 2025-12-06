@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.watchrepairservice.dto.ClientDTO;
-import rs.ac.bg.fon.watchrepairservice.dto.WatchDTO;
 import rs.ac.bg.fon.watchrepairservice.entity.Client;
 import rs.ac.bg.fon.watchrepairservice.entity.Watch;
 
